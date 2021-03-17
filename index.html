@@ -9,33 +9,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="canvas" ></div>
-    <script>
-   // canvas是HTML标签不能直接将其宽高设置为vw和vh，只能通过js获取宽高然后设置为用户视窗宽高。
-   //      let canvas = document.getElementById("canvas")
-   //      canvas.width = document.documentElement.clientWidth
-   //      canvas.hight = document.documentElement.clientHeight
-   //      let ctx = canvas.getContext("2d")
+<canvas id="canvas" width="100" height="100"></canvas>
+<script>
+    // canvas是HTML标签不能直接将其宽高设置为vw和vh，只能通过js获取宽高然后设置为用户视窗宽高。
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
 
-        canvas.onclick = (e) =>{
-            // console.log(e)
-            console.log(e.clientX,e.clientY)
+    let painting = false;
 
-            let div = document.createElement('div')
-            div.style.position = 'absolute'
-            div.style.left = e.clientX + 'px'
-            div.style.top = e.clientY + 'px'
-            console.log(div.style.top)
-            console.log(div.style.border)
-            div.style.width = '6px'
-            div.style.height = '6px'
-            div.style.marginLeft = "-3px"
-            div.style.marginTop = "-3px"
-            div.style.borderRadius = "50%"
-            div.style.background = 'black'
+    ctx.fillStyle = 'red';
 
-            canvas.appendChild(div)
+    canvas.onmousedown = () => {
+        painting = true;
+        // console.log("鼠标按下");
+        // console.log(painting);
+    }
+
+    canvas.onmousemove = (e) => {
+        if (painting === true) {
+            //使用小方块叠加划线
+            // console.log(e.clientX, e.clientY);
+            // ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10);
+
+            //使用小圆行叠加划线
+            ctx.beginPath();
+            ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
+            // ctx.stroke();
+            //描边
+            ctx.fill();
+        } else {
+            // console.log('待定');
         }
-    </script>
+    }
+
+    canvas.onmouseup = () => {
+        painting = false;
+    }
+
+</script>
 </body>
 </html>
