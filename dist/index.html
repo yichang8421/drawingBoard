@@ -10,43 +10,80 @@
 <body>
 <canvas id="canvas" width="100" height="100"></canvas>
 <script>
-    // canvas是HTML标签不能直接将其宽高设置为vw和vh，只能通过js获取宽高然后设置为用户视窗宽高。
-    let canvas = document.getElementById("canvas");
-    let ctx = canvas.getContext("2d");
+    let canvas = document.getElementById('canvas');
     canvas.width = document.documentElement.clientWidth;
     canvas.height = document.documentElement.clientHeight;
 
+    let ctx = canvas.getContext('2d');
+    ctx.strokeStyle = "red";
+    ctx.fillStyle = "red";
+    ctx.lineWidth = 10;
+    ctx.lineJoin = 'round';
+    // ctx.lineCap = 'round';
+
+    // drowline(0,0,300,300);
+    // drowline(300,300,400,200);
+
+    //检测当前设备是否支持触屏
+    let isTouchDevice = 'ontouchstart' in document.documentElement;
+    console.log(isTouchDevice);
+
     let painting = false;
+    let last;
 
-    ctx.fillStyle = 'red';
-
-    canvas.onmousedown = () => {
-        painting = true;
-        // console.log("鼠标按下");
-        // console.log(painting);
+    function drowline(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.closePath();
+        ctx.stroke();
     }
 
-    canvas.onmousemove = (e) => {
-        if (painting === true) {
-            //使用小方块叠加划线
-            // console.log(e.clientX, e.clientY);
-            // ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10);
+    if (isTouchDevice) {
+        // 触屏设备
+        console.log('触屏设备');
+        canvas.ontouchstart=(e)=>{
+            let x = e.touches[0].clientX;
+            let y = e.touches[0].clientY;
+            last=[x,y];
+        }
 
-            //使用小圆行叠加划线
-            ctx.beginPath();
-            ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
-            // ctx.stroke();
-            //描边
-            ctx.fill();
-        } else {
-            // console.log('待定');
+        canvas.ontouchmove = (e) => {
+            let x = e.touches[0].clientX;
+            let y = e.touches[0].clientY;
+            // console.log(x, y);
+            // ctx.beginPath();
+            // ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            // // 描边
+            // // ctx.stroke();
+            // ctx.fill();
+
+            drowline(last[0], last[1], x, y);
+            last = [x,y];
+        }
+    } else {
+        // 非触屏设备
+        canvas.onmousedown = (e) => {
+            painting = true;
+            last = [e.clientX, e.clientY];
+        }
+
+        canvas.onmousemove = (e) => {
+            if (painting) {
+                // ctx.beginPath();
+                // ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI);
+                // // 描边
+                // // ctx.stroke();
+                // ctx.fill();
+                drowline(last[0], last[1], e.clientX, e.clientY);
+            }
+            last = [e.clientX, e.clientY];
+        }
+
+        canvas.onmouseup = () => {
+            painting = false;
         }
     }
-
-    canvas.onmouseup = () => {
-        painting = false;
-    }
-
 </script>
 </body>
 </html>
