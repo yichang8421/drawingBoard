@@ -43,10 +43,10 @@
     if (isTouchDevice) {
         // 触屏设备
         console.log('触屏设备');
-        canvas.ontouchstart=(e)=>{
+        canvas.ontouchstart = (e) => {
             let x = e.touches[0].clientX;
             let y = e.touches[0].clientY;
-            last=[x,y];
+            last = [x, y];
         }
 
         canvas.ontouchmove = (e) => {
@@ -60,7 +60,7 @@
             // ctx.fill();
 
             drowline(last[0], last[1], x, y);
-            last = [x,y];
+            last = [x, y];
         }
     } else {
         // 非触屏设备
