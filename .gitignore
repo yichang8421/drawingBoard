@@ -1,5 +1,5 @@
 /idea/
 /.cache/
 /dist/
-deploy_gitee.sh
-deploy_github.sh
+/deploy_gitee.sh
+/deploy_github.sh
