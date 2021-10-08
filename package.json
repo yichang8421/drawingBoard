@@ -1,0 +1,12 @@
+{
+  "name": "canvas-demo-1",
+  "version": "1.0.0",
+  "dependencies": {
+  },
+  "scripts": {
+    "build": "rm -rf dist && parcel build src/index.html --no-minify --public-url .",
+    "deploy:github": "sh deploy_github.sh",
+    "deploy:gitee": "sh deploy_gitee.sh"
+  },
+  "repository": "git@github.com:yichang8421/drawingBoard.git"
+}
